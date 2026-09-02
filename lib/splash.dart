@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:brifup_news/Home/home.dart';
+import 'package:brifup_news/Features/Home/Presentation/Screen/home.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {

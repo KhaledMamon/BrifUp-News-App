@@ -1,5 +1,5 @@
 
-import 'package:brifup_news/model.dart';
+import 'package:brifup_news/Features/Home/Data/models/model.dart';
 import 'package:flutter/material.dart';
 
 class NewsDetail extends StatefulWidget {

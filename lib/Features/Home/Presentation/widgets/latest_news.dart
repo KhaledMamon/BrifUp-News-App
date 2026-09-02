@@ -1,5 +1,5 @@
 
-import 'package:brifup_news/page_detail_news.dart';
+import 'package:brifup_news/Features/Details%20Screen/Presentation/Screens/page_detail_news.dart';
 import 'package:flutter/material.dart';
 
 class LatestNews extends StatefulWidget {

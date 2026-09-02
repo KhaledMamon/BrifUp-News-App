@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:brifup_news/main.dart';
-import 'package:brifup_news/model.dart';
-import 'package:brifup_news/Home/widgets/latest_news.dart';
-import 'package:brifup_news/Home/widgets/trending.dart';
+import 'package:brifup_news/Features/Home/Data/models/model.dart';
+import 'package:brifup_news/Features/Home/Presentation/widgets/latest_news.dart';
+import 'package:brifup_news/Features/Home/Presentation/widgets/trending.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
