@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:brifup_news/Features/Explore/presentation/screen/explore_screen.dart';
 import 'package:brifup_news/Features/bookmark/presentation/screen/bookmarks_screen.dart';
 import 'package:brifup_news/splash.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
           themeMode: currentMode,
-          home: const BookmarksScreen(),
+          home: const ExploreScreen(),
         );
       },
     );
