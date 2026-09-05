@@ -1,4 +1,4 @@
-import 'package:brifup_news/Features/bookmark/model/article_model.dart';
+import 'package:brifup_news/Features/bookmark/Data/model/article_model.dart';
 import 'package:brifup_news/Features/bookmark/presentation/wediget/bookmark_card.dart';
 import 'package:brifup_news/Features/bookmark/presentation/wediget/bookmarks_header.dart';
 import 'package:flutter/material.dart';
