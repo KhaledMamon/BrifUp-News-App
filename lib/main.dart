@@ -1,7 +1,9 @@
 
+import 'dart:io';
+
+import 'package:brifup_news/Features/bookmark/presentation/screen/bookmarks_screen.dart';
 import 'package:brifup_news/splash.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 
 class MyHttpOverrides extends HttpOverrides {
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
           themeMode: currentMode,
-          home: const Splash(),
+          home: const BookmarksScreen(),
         );
       },
     );

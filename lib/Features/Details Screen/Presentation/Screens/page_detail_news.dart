@@ -1,6 +1,8 @@
 
-import 'package:brifup_news/Features/Home/Data/models/model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../../Home/Data/models/model.dart';
 
 class NewsDetail extends StatefulWidget {
   final NewsModel news;
