@@ -35,6 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   http: ^1.6.0
+  dio: ^5.11.1
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +71,8 @@ flutter:
     - images\Category Card1.png
     - images\Category Card2.png
     - images\Category Card3.webp
-    - images\Category-Card4.png
+    - images\Business.png
+    - images\CategoryCard4.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

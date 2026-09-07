@@ -4,13 +4,15 @@ class CategoryCard extends StatelessWidget {
   final String title;
   final String imagePath;
   final IconData icon;
+  final VoidCallback? onTap; // إضافة الـ Callback للضغط
 
   const CategoryCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.imagePath,
     required this.icon,
-  }) : super(key: key);
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +20,29 @@ class CategoryCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Stack(
         children: [
+          // الصورة
           Image.asset(
             imagePath,
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
           ),
+
+          // الـ Gradient الظل الأسود تحت النص
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withOpacity(0.7),
+                ],
               ),
             ),
           ),
+
+          // محتوى الكارت (الـ Icon والـ Title)
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -50,6 +60,18 @@ class CategoryCard extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+
+          // إضافة InkWell شفافة فوق الطبقات لتفعيل الضغطة مع أنيميشن اللمس
+          Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: onTap,
+                splashColor: Colors.white10,
+                highlightColor: Colors.white10,
+              ),
             ),
           ),
         ],

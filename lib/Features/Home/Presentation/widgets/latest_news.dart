@@ -13,6 +13,7 @@ class LatestNews extends StatefulWidget {
     this.snippet,
     required this.newsData,
   });
+
   final String? articleURL;
   final String? country;
   final String? title;
@@ -29,8 +30,8 @@ class LatestNews extends StatefulWidget {
 class _LatestNewsState extends State<LatestNews> {
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () {
+    return InkWell(
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -39,100 +40,130 @@ class _LatestNewsState extends State<LatestNews> {
         );
       },
       child: Card(
-        child: Row(
-          children: [
-            Image.network(
-              '${widget.articleURL}',
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: Colors.grey[200],
-                  child: Center(
-                    child: Icon(
-                      Icons.broken_image,
-                      color: Colors.grey,
-                      size: 120,
-                    ),
-                  ),
-                );
-              },
-              height: 120,
-              width: 120,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${widget.country}',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Color.fromRGBO(78, 75, 102, 1),
-                    ),
-                  ),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1. الصورة الرئيسية مع معالجة الأخطاء والأبعاد
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  widget.articleURL ?? '',
+                  height: 100,
+                  width: 100,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      height: 100,
+                      width: 100,
+                      color: Colors.grey[300],
+                      child: const Icon(
+                        Icons.broken_image,
+                        color: Colors.grey,
+                        size: 40,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(width: 10),
 
-                  Text(
-                    '${widget.title}',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                  Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(60),
-                        child: Image.network(
-                          '${widget.journalURL}',
-                          width: 20,
-                          height: 20,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Text(
-                        // '${widget.journal}',
-                        (widget.journal!.length > 10)
-                            ? '${widget.journal!.substring(0, 10)}..'
-                            : widget.journal!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Color.fromRGBO(78, 75, 102, 1),
-                        ),
-                      ),
-                      SizedBox(width: 25),
-                      Icon(
-                        Icons.schedule,
-                        size: 17,
+              // 2. تفاصيل الخبر
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      widget.country ?? '',
+                      style: const TextStyle(
+                        fontSize: 13,
                         color: Color.fromRGBO(78, 75, 102, 1),
                       ),
-                      SizedBox(width: 5),
-                      Text(
-                        '${widget.time}h ago',
-                        style: TextStyle(
-                          fontSize: 15,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      widget.title ?? '',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                    const SizedBox(height: 8),
+
+                    // 3. الصف السفلي للمصدر والوقت والأيقونة
+                    Row(
+                      children: [
+                        // صورة المصدر
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            widget.journalURL ?? '',
+                            width: 18,
+                            height: 18,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(
+                              Icons.newspaper,
+                              size: 18,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+
+                        // اسم المصدر
+                        Flexible(
+                          child: Text(
+                            widget.journal ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Color.fromRGBO(78, 75, 102, 1),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+
+                        // أيقونة الوقت والزمن
+                        const Icon(
+                          Icons.schedule,
+                          size: 14,
                           color: Color.fromRGBO(78, 75, 102, 1),
                         ),
-                      ),
-                      Spacer(),
-                      IconButton(
-                        // alignment: Alignment.bottomLeft,
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.bookmark_border_outlined,
-                          size: 20,
-                          color: Color.fromRGBO(78, 75, 102, 1),
+                        const SizedBox(width: 2),
+                        Text(
+                          '${widget.time ?? "0"}h ago',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color.fromRGBO(78, 75, 102, 1),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+
+                        const Spacer(),
+
+                        // زر الحفظ
+                        GestureDetector(
+                          onTap: () {},
+                          child: const Icon(
+                            Icons.bookmark_border_outlined,
+                            size: 20,
+                            color: Color.fromRGBO(78, 75, 102, 1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

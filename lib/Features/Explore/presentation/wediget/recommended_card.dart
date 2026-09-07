@@ -1,11 +1,10 @@
 import 'package:brifup_news/Features/Explore/model/explore_article_model.dart';
 import 'package:flutter/material.dart';
 
-
 class RecommendedCard extends StatelessWidget {
   final ExploreArticleModel article;
 
-  const RecommendedCard({Key? key, required this.article}) : super(key: key);
+  const RecommendedCard({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +20,7 @@ class RecommendedCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(
-              article.imagePath,
-              height: 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            child: _buildImage(article.urlToImage),
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -34,7 +28,7 @@ class RecommendedCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  article.category.toUpperCase(),
+                  (article.category ?? 'GENERAL').toUpperCase(),
                   style: const TextStyle(
                     color: Colors.red,
                     fontSize: 10,
@@ -53,7 +47,7 @@ class RecommendedCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  article.description,
+                  article.description ?? '',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -66,7 +60,7 @@ class RecommendedCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      article.time,
+                      article.publishedAt ?? '',
                       style: TextStyle(color: Colors.grey.shade500, fontSize: 10),
                     ),
                     const Icon(Icons.bookmark_border, size: 16, color: Colors.grey),
@@ -78,5 +72,37 @@ class RecommendedCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // دالة ذكية للتحقق هل الصورة رابط من الـ API أم من الـ Assets
+  Widget _buildImage(String? imagePath) {
+    if (imagePath == null || imagePath.isEmpty) {
+      return Container(
+        height: 120,
+        color: Colors.grey.shade300,
+        child: const Icon(Icons.image_not_supported, color: Colors.grey),
+      );
+    }
+
+    if (imagePath.startsWith('http')) {
+      return Image.network(
+        imagePath,
+        height: 120,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => Container(
+          height: 120,
+          color: Colors.grey.shade300,
+          child: const Icon(Icons.broken_image, color: Colors.grey),
+        ),
+      );
+    } else {
+      return Image.asset(
+        imagePath,
+        height: 120,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      );
+    }
   }
 }

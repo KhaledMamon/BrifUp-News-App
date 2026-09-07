@@ -1,33 +1,44 @@
-
 import 'package:brifup_news/Features/Home/Data/models/model.dart';
 import 'package:brifup_news/Features/Home/Presentation/widgets/latest.dart';
 import 'package:brifup_news/Features/Home/Presentation/widgets/trend.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({
     super.key,
-    required this._news,
+    required this.news,
   });
 
-  final Future<List<NewsModel>> _news;
+  final Future<List<NewsModel>> news;
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  late Future<List<NewsModel>> _currentNews;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentNews = widget.news;
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
+        // Search Bar
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
             onSubmitted: (value) {
-              // print("onSubmitted: $value");
+              // يمكن إضافة البحث عبر الـ API هنا
             },
             keyboardType: TextInputType.text,
-    
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.search),
               hintText: "Search",
-    
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
                 borderSide: const BorderSide(
@@ -44,9 +55,8 @@ class Home extends StatelessWidget {
               ),
               suffixIcon: IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.tune),
+                icon: const Icon(Icons.tune),
               ),
-    
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
@@ -54,7 +64,8 @@ class Home extends StatelessWidget {
             ),
           ),
         ),
-    
+
+        // Trending Header
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -63,23 +74,25 @@ class Home extends StatelessWidget {
                 'Trending',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              Spacer(),
+              const Spacer(),
               TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'See all',
                   style: TextStyle(
                     fontSize: 17,
-                    color: const Color.fromARGB(255, 232, 43, 26),
+                    color: Color.fromARGB(255, 232, 43, 26),
                   ),
                 ),
               ),
             ],
           ),
         ),
-    
-        Trend(news: _news),
-    
+
+        // Trend Section Widget
+        Trend(news: widget.news),
+
+        // Latest Header
         Padding(
           padding: const EdgeInsets.only(left: 10.0, right: 10),
           child: Row(
@@ -88,46 +101,57 @@ class Home extends StatelessWidget {
                 'Latest',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              Spacer(),
+              const Spacer(),
               TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'See all',
                   style: TextStyle(
                     fontSize: 17,
-                    color: const Color.fromARGB(255, 232, 43, 26),
+                    color: Color.fromARGB(255, 232, 43, 26),
                   ),
                 ),
               ),
             ],
           ),
         ),
+
+        // TabBar Categories
         DefaultTabController(
           length: 7,
-          child: Column(
-            children: [
-              TabBar(
-                isScrollable: true,
-                tabAlignment: TabAlignment.start,
-                indicatorColor: const Color.fromARGB(255, 232, 43, 26),
-                labelColor: const Color.fromARGB(255, 232, 43, 26),
-                unselectedLabelColor: Colors.grey,
-                indicatorSize: TabBarIndicatorSize.label,
-                dividerColor: Colors.transparent,
-                tabs: const [
-                  Tab(text: "All"),
-                  Tab(text: "Sports"),
-                  Tab(text: "Politics"),
-                  Tab(text: "Business"),
-                  Tab(text: "Health"),
-                  Tab(text: "Travel"),
-                  Tab(text: "Science"),
+          child: Builder(
+            builder: (context) {
+              return Column(
+                children: [
+                  TabBar(
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    indicatorColor: const Color.fromARGB(255, 232, 43, 26),
+                    labelColor: const Color.fromARGB(255, 232, 43, 26),
+                    unselectedLabelColor: Colors.grey,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    dividerColor: Colors.transparent,
+                    onTap: (index) {
+                      // يمكنك جلب الأخبار بحسب القسم عند الضغط على الـ Tab
+                    },
+                    tabs: const [
+                      Tab(text: "All"),
+                      Tab(text: "Sports"),
+                      Tab(text: "Politics"),
+                      Tab(text: "Business"),
+                      Tab(text: "Health"),
+                      Tab(text: "Travel"),
+                      Tab(text: "Science"),
+                    ],
+                  ),
                 ],
-              ),
-            ],
+              );
+            },
           ),
         ),
-        Latest(news: _news),
+
+        // Latest News Widget
+        Latest(news: _currentNews),
       ],
     );
   }
