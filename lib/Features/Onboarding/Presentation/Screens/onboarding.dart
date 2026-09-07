@@ -33,7 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (currentPage < 2) {
       _pageController.animateToPage(
         currentPage + 1,
-        duration: const Duration(milliseconds: 350),
+        duration: Duration(milliseconds: 350),
         curve: Curves.easeInOut,
       );
     } else {
@@ -44,7 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void skip() {
     _pageController.animateToPage(
       2,
-      duration: const Duration(milliseconds: 350),
+      duration: Duration(milliseconds: 350),
       curve: Curves.easeInOut,
     );
   }
@@ -52,10 +52,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: Color(0xFFF8F8F8),
       body: PageView(
         controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         onPageChanged: (index) {
           setState(() {
             currentPage = index;

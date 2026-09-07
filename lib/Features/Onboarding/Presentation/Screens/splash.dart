@@ -15,14 +15,14 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Timer(
-      const Duration(seconds: 2),
+      Duration(seconds: 2),
           () {
         if (!mounted) return;
 
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => const OnboardingScreen(),
+            builder: (_) => OnboardingScreen(),
           ),
         );
       },
@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFD7091B),
+      backgroundColor: Color(0xFFD7091B),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -42,9 +42,9 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 220,
             ),
 
-            const SizedBox(height: 35),
+            SizedBox(height: 35),
 
-            const SizedBox(
+            SizedBox(
               width: 52,
               height: 52,
               child: CircularProgressIndicator(

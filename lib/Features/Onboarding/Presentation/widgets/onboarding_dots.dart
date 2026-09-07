@@ -14,9 +14,9 @@ class OnboardingDots extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildDot(0),
-        const SizedBox(width: 7),
+        SizedBox(width: 7),
         _buildDot(1),
-        const SizedBox(width: 7),
+        SizedBox(width: 7),
         _buildDot(2),
       ],
     );
@@ -26,14 +26,14 @@ class OnboardingDots extends StatelessWidget {
     final bool active = currentPage == index;
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       width: active ? 27 : 6,
       height: 6,
       decoration: BoxDecoration(
         color: active
-            ? const Color(0xFFC8101E)
-            : const Color(0xFFE0E0E0),
+            ? Color(0xFFC8101E)
+            : Color(0xFFE0E0E0),
         borderRadius: BorderRadius.circular(20),
       ),
     );

@@ -34,7 +34,7 @@ class OnboardingPage1 extends StatelessWidget {
           bottom: 200,
           height: 250,
           child: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -51,13 +51,13 @@ class OnboardingPage1 extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(
+            padding: EdgeInsets.fromLTRB(
               16,
               18,
               16,
               12,
             ),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Color(0xFFF8F8F8),
               borderRadius: BorderRadius.vertical(
                 top: Radius.circular(22),
@@ -66,7 +66,7 @@ class OnboardingPage1 extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   'Stay Informed',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -75,26 +75,26 @@ class OnboardingPage1 extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
 
                 Text(
                   model.description,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     height: 1.4,
                     color: Color(0xFF666666),
                   ),
                 ),
 
-                // نفس المسافة في كل الصفحات
-                const SizedBox(height: 18),
+                // مسافه الDots
+                SizedBox(height: 18),
 
                 OnboardingDots(
                   currentPage: currentPage,
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 SizedBox(
                   width: double.infinity,
@@ -102,24 +102,24 @@ class OnboardingPage1 extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: onNext,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFC8101E),
+                      backgroundColor: Color(0xFFC8101E),
                       foregroundColor: Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Next'),
+                    child: Text('Next'),
                   ),
                 ),
 
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
 
                 SizedBox(
                   height: 36,
                   child: TextButton(
                     onPressed: onSkip,
-                    child: const Text(
+                    child: Text(
                       'Skip',
                       style: TextStyle(
                         color: Color(0xFF666666),
