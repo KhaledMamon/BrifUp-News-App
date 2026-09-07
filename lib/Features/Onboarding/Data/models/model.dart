@@ -1,11 +1,11 @@
-class OnboardingModel {
-  final String title;
-  final String description;
-  final String? image;
+// class OnboardingModel {
+//   final String title;
+//   final String description;
+//   final String? image;
 
-  const OnboardingModel({
-    required this.title,
-    required this.description,
-    this.image,
-  });
-}
+//   const OnboardingModel({
+//     required this.title,
+//     required this.description,
+//     this.image,
+//   });
+// }

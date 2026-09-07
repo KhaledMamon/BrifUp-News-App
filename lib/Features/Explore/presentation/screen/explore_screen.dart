@@ -48,9 +48,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      // عرض الصفحة حسب الـ Bottom Navigation
       body: _currentIndex == 1
-          ? _buildExplorePage()
+          ? Explore(recommendedList: recommendedList)
           : _pages[_currentIndex],
 
       bottomNavigationBar: BottomNavigationBar(
@@ -86,8 +85,18 @@ class _ExploreScreenState extends State<ExploreScreen> {
       ),
     );
   }
+}
 
-  Widget _buildExplorePage() {
+class Explore extends StatelessWidget {
+  const Explore({
+    super.key,
+    required this.recommendedList,
+  });
+
+  final List<ExploreArticleModel> recommendedList;
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         children: [
