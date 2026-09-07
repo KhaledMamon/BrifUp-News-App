@@ -74,7 +74,7 @@ class _NewsDetailState extends State<NewsDetail> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
-                      '${widget.news.articleURL}',
+                      '${widget.news.journalURL}',
                       fit: BoxFit.cover,
                       height: 400,
                     ),

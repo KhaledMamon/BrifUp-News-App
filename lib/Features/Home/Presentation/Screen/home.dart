@@ -262,40 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (value) {
-          setState(() {
-            _currentIndex = value;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color.fromARGB(255, 232, 43, 26),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(_currentIndex == 0 ? Icons.home : Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _currentIndex == 1 ? Icons.explore : Icons.explore_outlined,
-            ),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _currentIndex == 2 ? Icons.bookmark : Icons.bookmark_outline,
-            ),
-            label: 'Bookmarks',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _currentIndex == 3 ? Icons.person : Icons.person_outline,
-            ),
-            label: 'Profile',
-          ),
-        ],
-      ),
+     
       // body: _currentIndex == 0 ? Home() : _pages[_currentIndex],
       body: Home(news: _news),
     );

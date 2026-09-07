@@ -28,7 +28,7 @@ class Trend extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 Trending(
-                  articleURL: news.articleURL ?? '',
+                  articleURL: news.journal ?? '',
                   country: news.country ?? 'US',
                   journal: news.journal ?? 'Unknown',
                   journalURL: news.journalURL ?? '',

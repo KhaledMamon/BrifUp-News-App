@@ -1,4 +1,9 @@
 
+import 'package:brifup_news/Features/Bookmark/presentation/screen/bookmarks_screen.dart';
+import 'package:brifup_news/Features/Explore/presentation/screen/explore_screen.dart';
+import 'package:brifup_news/Features/Home/Presentation/Screen/home.dart';
+import 'package:brifup_news/Features/Home/Presentation/Screen/home_screen.dart';
+import 'package:brifup_news/root_screen.dart';
 import 'package:brifup_news/splash.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -36,7 +41,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
           themeMode: currentMode,
-          home: const Splash(),
+          home: const RootScreen(),
         );
       },
     );

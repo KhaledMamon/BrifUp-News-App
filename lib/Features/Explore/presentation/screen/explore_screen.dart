@@ -52,37 +52,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ? Explore(recommendedList: recommendedList)
           : _pages[_currentIndex],
 
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: const Color(0xFFD71920),
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
+   
 
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore_outlined),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'Bookmarks',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
-        ],
-      ),
+       
     );
   }
 }

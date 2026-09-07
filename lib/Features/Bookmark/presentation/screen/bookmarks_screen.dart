@@ -11,9 +11,8 @@ class BookmarksScreen extends StatefulWidget {
 }
 
 class _BookmarksScreenState extends State<BookmarksScreen> {
-  int _currentIndex = 2;
-
-  final List<ArticleData> articles = [
+  // إزالة final للتعديل على عناصر القائمة
+  List<ArticleData> articles = [
     const ArticleData(
       category: 'Technology',
       title: 'AI is changing the concept of architectural design in the...',
@@ -89,7 +88,10 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                     article: articles[index],
                     onBookmarkPressed: () {
                       setState(() {
-                        articles.removeAt(index);
+                        // تبديل حالة الحفظ بدون حذف الخبر والصورة
+                        articles[index] = articles[index].copyWith(
+                          isBookmarked: !articles[index].isBookmarked,
+                        );
                       });
                     },
                     onTap: () {},
@@ -100,7 +102,6 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
           ],
         ),
       ),
- 
     );
   }
 }
