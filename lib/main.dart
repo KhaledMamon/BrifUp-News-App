@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
           themeMode: currentMode,
-          home: const Splash(),
+          home: const SplashScreen(),
         );
       },
     );
