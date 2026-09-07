@@ -1,4 +1,3 @@
-
 import 'package:brifup_news/Features/Details%20Screen/Presentation/Screens/page_detail_news.dart';
 import 'package:flutter/material.dart';
 
@@ -123,7 +122,7 @@ class _LatestNewsState extends State<LatestNews> {
                         // alignment: Alignment.bottomLeft,
                         onPressed: () {},
                         icon: Icon(
-                          Icons.more_vert,
+                          Icons.bookmark_border_outlined,
                           size: 20,
                           color: Color.fromRGBO(78, 75, 102, 1),
                         ),

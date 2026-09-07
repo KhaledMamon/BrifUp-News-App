@@ -1,4 +1,3 @@
-
 import 'package:brifup_news/Features/Details%20Screen/Presentation/Screens/page_detail_news.dart';
 import 'package:flutter/material.dart';
 
@@ -41,52 +40,83 @@ class _TrendingState extends State<Trending> {
       },
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            Image.network('${widget.articleURL}'),
-            SizedBox(height: 15),
-            Text(
-              '${widget.country}',
-              style: TextStyle(fontSize: 15, color: Colors.blueGrey),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image.network(
+                '${widget.articleURL}',
+                width: 370,
+                height: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
-            Text('${widget.title}', style: TextStyle(fontSize: 30)),
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
-                  child: Image.network(
-                    '${widget.journalURL}',
-
-                    width: 25,
-                    height: 25,
-                    fit: BoxFit.cover,
-                  ),
+            Positioned(
+              top: 10,
+              left: 10,
+              child: Container(
+                padding: EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 2),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(209, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(100),
                 ),
-
-                SizedBox(width: 5),
-                Text(
-                  '${widget.journal}',
+                child: Text(
+                  '${widget.country}',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: Color.fromRGBO(78, 75, 102, 1),
+                    fontSize: 25,
+                    color: const Color.fromARGB(255, 232, 43, 26),
                   ),
                 ),
-                SizedBox(width: 25),
-                Icon(
-                  Icons.schedule,
-                  size: 20,
-                  color: Color.fromRGBO(78, 75, 102, 1),
+              ),
+            ),
+            Positioned(
+              bottom: 50,
+              left: 20,
+              right: 20,
+              child: Text(
+                '${widget.title}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-                SizedBox(width: 5),
-                Text(
-                  '${widget.time}h ago',
-                  style: TextStyle(color: Color.fromRGBO(78, 75, 102, 1)),
-                ),
-                Spacer(),
-                IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
-              ],
+              ),
+            ),
+            Positioned(
+              bottom: 15,
+              left: 20,
+              right: 0,
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: Image.network(
+                      '${widget.journalURL}',
+
+                      width: 25,
+                      height: 25,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+
+                  SizedBox(width: 5),
+                  Text(
+                    '${widget.journal}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(width: 25),
+                  Icon(Icons.schedule, size: 20, color: Colors.grey),
+                  SizedBox(width: 5),
+                  Text(
+                    '${widget.time}h ago',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

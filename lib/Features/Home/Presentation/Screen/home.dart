@@ -60,15 +60,162 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.newspaper_sharp, size: 35),
-          color: const Color.fromARGB(255, 232, 43, 26),
-          onPressed: () {},
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.all(20),
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color.fromARGB(255, 232, 43, 26),
+                  ),
+                  child: Icon(Icons.person, color: Colors.white),
+                ),
+                SizedBox(width: 15),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Khaled Gamal',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Text(
+                      'Khaledgamal.boy@gmail.com',
+                      style: TextStyle(
+                        fontSize: 13,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Divider(
+              thickness: .5,
+              color: Colors.grey,
+              indent: 20,
+              endIndent: 20,
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () {
+                // Handle Home navigation
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.explore),
+              title: Text('Explore'),
+              onTap: () {
+                // Handle Explore navigation
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.bookmark),
+              title: Text('Bookmarks'),
+              onTap: () {
+                // Handle Bookmarks navigation
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Profile'),
+              onTap: () {
+                // Handle Profile navigation
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(height: 10),
+            Divider(
+              thickness: .5,
+              color: Colors.grey,
+              indent: 20,
+              endIndent: 20,
+            ),
+            Text(
+              'Settings',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 232, 43, 26),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                'Dark Mode',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  // color: const Color.fromARGB(255, 232, 43, 26),
+                ),
+              ),
+              title: Switch(
+                value: themeNotifier.value == ThemeMode.dark,
+                onChanged: (value) {
+                  setState(() {
+                    themeNotifier.value = value
+                        ? ThemeMode.dark
+                        : ThemeMode.light;
+                  });
+                },
+              ),
+              onTap: () {
+                // Handle Settings navigation
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Text(
+                'Language',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  // color: const Color.fromARGB(255, 232, 43, 26),
+                ),
+              ),
+              title: DropdownButton<String>(
+                value: 'English',
+                items: <String>['English', 'Arabic']
+                    .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    })
+                    .toList(),
+                onChanged: (String? newValue) {
+                  // Handle language change
+                },
+              ),
+              onTap: () {
+                // Handle Settings navigation
+                Navigator.pop(context);
+              },
+            ),
+          ],
         ),
+      ),
+      appBar: AppBar(
+        // leading: IconButton(icon: Icon(Icons.menu, size: 35), onPressed: () {}),
         title: Text(
           'BriefUp',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 30,
+            color: const Color.fromARGB(255, 232, 43, 26),
+          ),
         ),
         centerTitle: true,
         actions: [
@@ -181,7 +328,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {},
                   child: Text(
                     'See all',
-                    style: TextStyle(fontSize: 17, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: const Color.fromARGB(255, 232, 43, 26),
+                    ),
                   ),
                 ),
               ],
@@ -197,15 +347,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 final news = snapshot.data![0];
-                return Trending(
-                  articleURL: news.articleURL ?? '',
-                  country: news.country ?? 'US',
-                  journal: news.journal ?? 'Unknown',
-                  journalURL: news.journalURL ?? '',
-                  time: news.time ?? '5',
-                  title: news.title ?? '',
-                  snippet: news.snippet ?? '',
-                  newsData: news,
+                return SizedBox(
+                  height: 400,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    children: [
+                      Trending(
+                        articleURL: news.articleURL ?? '',
+                        country: news.country ?? 'US',
+                        journal: news.journal ?? 'Unknown',
+                        journalURL: news.journalURL ?? '',
+                        time: news.time ?? '6',
+                        title: news.title ?? '',
+                        snippet: news.snippet ?? '',
+                        newsData: news,
+                      ),
+                      Trending(
+                        articleURL: news.articleURL ?? '',
+                        country: news.country ?? 'US',
+                        journal: news.journal ?? 'Unknown',
+                        journalURL: news.journalURL ?? '',
+                        time: news.time ?? '6',
+                        title: news.title ?? '',
+                        snippet: news.snippet ?? '',
+                        newsData: news,
+                      ),
+                    ],
+                  ),
                 );
               }
               return Container();
@@ -225,7 +394,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {},
                   child: Text(
                     'See all',
-                    style: TextStyle(fontSize: 17, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: const Color.fromARGB(255, 232, 43, 26),
+                    ),
                   ),
                 ),
               ],
@@ -239,7 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   isScrollable: true,
                   tabAlignment: TabAlignment.start,
                   indicatorColor: const Color.fromARGB(255, 232, 43, 26),
-                  labelColor: Colors.black,
+                  labelColor: const Color.fromARGB(255, 232, 43, 26),
                   unselectedLabelColor: Colors.grey,
                   indicatorSize: TabBarIndicatorSize.label,
                   dividerColor: Colors.transparent,

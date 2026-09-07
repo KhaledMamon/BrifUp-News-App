@@ -1,4 +1,3 @@
-
 import 'package:brifup_news/Features/Home/Data/models/model.dart';
 import 'package:flutter/material.dart';
 
@@ -25,104 +24,138 @@ class _NewsDetailState extends State<NewsDetail> {
           TextButton(onPressed: () {}, child: Icon(Icons.more_vert, size: 25)),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+
+      bottomNavigationBar: BottomAppBar(
+        height: 70,
+        child: Container(
+          height: 50,
+          color: Colors.transparent,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // News Image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  '${widget.news.articleURL}',
-                  height: 250,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      height: 250,
-                      color: const Color.fromARGB(255, 78, 76, 76),
-                      child: Center(
-                        child: Icon(
-                          Icons.broken_image,
-                          color: Colors.grey,
-                          size: 80,
+              Expanded(
+                child: TextButton(
+                  onPressed: () {},
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 232, 43, 26),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Read Full Article on Website ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                        Icon(Icons.open_in_new_outlined, color: Colors.white),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(height: 20),
-
-              // Country
-              Text(
-                '${widget.news.country ?? 'US'}',
-                style: TextStyle(fontSize: 15, color: Colors.blueGrey),
-              ),
-              SizedBox(height: 8),
-
-              // Title
-              Text(
-                '${widget.news.title}',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 16),
-
-              // Row with journal info and time
-              Row(
+            ],
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(60),
+                    borderRadius: BorderRadius.circular(15),
                     child: Image.network(
-                      '${widget.news.journalURL}',
-                      width: 30,
-                      height: 30,
+                      '${widget.news.articleURL}',
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.grey[200],
-                          ),
-                          child: Icon(Icons.newspaper, size: 16),
-                        );
-                      },
+                      height: 400,
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      '${widget.news.journal}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        color: Color.fromRGBO(78, 75, 102, 1),
+                  SizedBox(height: 15),
+                  Positioned(
+                    top: 10,
+                    left: 10,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 5,
+                        right: 5,
+                        top: 2,
+                        bottom: 2,
                       ),
-                      overflow: TextOverflow.ellipsis,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(209, 255, 255, 255),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Text(
+                        '${widget.news.country}',
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: const Color.fromARGB(255, 232, 43, 26),
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(width: 16),
-                  Icon(
-                    Icons.schedule,
-                    size: 20,
-                    color: Color.fromRGBO(78, 75, 102, 1),
+                  Positioned(
+                    bottom: 50,
+                    left: 20,
+                    right: 20,
+                    child: Text(
+                      '${widget.news.title}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                  SizedBox(width: 5),
-                  Text(
-                    '${widget.news.time ?? '0'}h ago',
-                    style: TextStyle(color: Color.fromRGBO(78, 75, 102, 1)),
+                  Positioned(
+                    bottom: 15,
+                    left: 20,
+                    right: 0,
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(60),
+                          child: Image.network(
+                            '${widget.news.journalURL}',
+
+                            width: 25,
+                            height: 25,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+
+                        SizedBox(width: 5),
+                        Text(
+                          '${widget.news.journal}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        SizedBox(width: 25),
+                        Icon(Icons.schedule, size: 20, color: Colors.grey),
+                        SizedBox(width: 5),
+                        Text(
+                          '${widget.news.time}h ago',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-
-              // Snippet / Description
               Text(
-                '${widget.news.snippet ?? 'No description available'}',
+                widget.news.snippet ?? 'No description',
                 style: TextStyle(
                   fontSize: 16,
                   height: 1.6,
