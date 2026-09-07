@@ -1,49 +1,57 @@
 import 'dart:async';
-import 'package:brifup_news/Features/Home/Presentation/Screen/home.dart';
 import 'package:flutter/material.dart';
+import 'Features/Onboarding/Presentation/Screens/onboarding.dart';
 
-class Splash extends StatefulWidget {
-  const Splash({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<Splash> createState() => _SplashState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-    });
+
+    Timer(
+      Duration(seconds: 2),
+          () {
+        if (!mounted) return;
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => OnboardingScreen(),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFD7091B),
       body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 232, 43, 26),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(Icons.newspaper, color: Colors.white, size: 40),
+            Image.asset(
+              'assets/Splash.png',
+              width: 220,
             ),
-            const SizedBox(width: 12),
-            const Text(
-              'BriefUp',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff202124),
+
+            SizedBox(height: 35),
+
+            SizedBox(
+              width: 52,
+              height: 52,
+              child: CircularProgressIndicator(
+                strokeWidth: 5,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Colors.white,
+                ),
               ),
             ),
           ],
