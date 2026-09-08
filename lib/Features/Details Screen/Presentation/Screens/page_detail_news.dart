@@ -1,6 +1,8 @@
 import 'package:brifup_news/Features/Home/Data/models/model.dart';
+import 'package:brifup_news/Core/Utils/app_image.dart';
+import 'package:brifup_news/Core/Utils/app_localizations.dart';
+import 'package:brifup_news/Core/Utils/app_shell.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetail extends StatefulWidget {
   final NewsModel news;
@@ -12,67 +14,26 @@ class NewsDetail extends StatefulWidget {
 }
 
 class _NewsDetailState extends State<NewsDetail> {
-  // دالة لفتح رابط الخبر في المتصفح الخارجي
   Future<void> _launchURL(String? urlString) async {
     if (urlString == null || urlString.isEmpty) return;
     final Uri url = Uri.parse(urlString);
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open the link')),
-        );
-      }
-    }
+    // if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+    //   if (mounted) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       const SnackBar(content: Text('Could not open the link')),
+    //     );
+    //   }
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'BriefUp News',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert, size: 25),
-          ),
-        ],
+      appBar: AppHeader(
+        title: AppLocalizations.of(context).newsDetails,
+        showBack: true,
       ),
-
-      // زر الانتقال للموقع الخارجي
-      bottomNavigationBar: BottomAppBar(
-        height: 70,
-        child: SizedBox(
-          height: 50,
-          child: ElevatedButton(
-            onPressed: () => _launchURL(widget.news.articleURL),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 232, 43, 26),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 10),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Read Full Article on Website ',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                Icon(Icons.open_in_new_outlined, color: Colors.white),
-              ],
-            ),
-          ),
-        ),
-      ),
+      drawer: const AppDrawer(),
 
       body: SingleChildScrollView(
         child: Padding(
@@ -80,31 +41,19 @@ class _NewsDetailState extends State<NewsDetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. بطاقة الصورة مع الطبقة المظلمة لقراءة العنوان
               Stack(
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
-                    child: Image.network(
-                      widget.news.articleURL ?? '', // تم تعديلها لصورة الخبر الرئيسية
+                    child: AppImage(
+                      url: widget.news.articleURL,
                       fit: BoxFit.cover,
                       height: 350,
                       width: double.infinity,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          height: 350,
-                          color: Colors.grey[300],
-                          child: const Icon(
-                            Icons.broken_image,
-                            size: 60,
-                            color: Colors.grey,
-                          ),
-                        );
-                      },
+                      fallbackSeed: widget.news.title,
                     ),
                   ),
 
-                  // تدرج ظلي خلف النصوص لضمان وضوح الكتابة على الصورة
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
@@ -121,7 +70,6 @@ class _NewsDetailState extends State<NewsDetail> {
                     ),
                   ),
 
-                  // الدولة / التصنيف
                   Positioned(
                     top: 12,
                     left: 12,
@@ -145,7 +93,6 @@ class _NewsDetailState extends State<NewsDetail> {
                     ),
                   ),
 
-                  // العنوان والمصدر بالأسفل فوق الصورة
                   Positioned(
                     bottom: 12,
                     left: 12,
@@ -168,17 +115,12 @@ class _NewsDetailState extends State<NewsDetail> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                widget.news.journalURL ?? '',
+                              child: AppImage(
+                                url: widget.news.journalURL,
                                 width: 20,
                                 height: 20,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(
-                                  Icons.newspaper,
-                                  size: 20,
-                                  color: Colors.white,
-                                ),
+                                fallbackSeed: widget.news.journal,
                               ),
                             ),
                             const SizedBox(width: 6),
@@ -214,13 +156,21 @@ class _NewsDetailState extends State<NewsDetail> {
 
               const SizedBox(height: 16),
 
-              // 2. تفاصيل ومحتوى الخبر
               Text(
                 widget.news.snippet ?? 'No details available.',
                 style: TextStyle(
                   fontSize: 15,
                   height: 1.6,
                   color: Colors.grey[800],
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => _launchURL(widget.news.articleURL),
+                  icon: const Icon(Icons.open_in_new_outlined),
+                  label: const Text('Read Full Article on Website'),
                 ),
               ),
             ],

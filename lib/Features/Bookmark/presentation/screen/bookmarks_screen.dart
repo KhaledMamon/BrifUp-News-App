@@ -1,7 +1,10 @@
 import 'package:brifup_news/Features/Bookmark/Data/model/article_model.dart';
+import 'package:brifup_news/Features/Bookmark/Data/bookmark_store.dart';
 import 'package:brifup_news/Features/Bookmark/presentation/wediget/bookmark_card.dart';
 import 'package:brifup_news/Features/Bookmark/presentation/wediget/bookmarks_header.dart';
 import 'package:flutter/material.dart';
+import 'package:brifup_news/Core/Utils/app_shell.dart';
+import 'package:brifup_news/Core/Utils/app_localizations.dart';
 
 class BookmarksScreen extends StatefulWidget {
   const BookmarksScreen({super.key});
@@ -11,96 +14,43 @@ class BookmarksScreen extends StatefulWidget {
 }
 
 class _BookmarksScreenState extends State<BookmarksScreen> {
-  // إزالة final للتعديل على عناصر القائمة
-  List<ArticleData> articles = [
-    const ArticleData(
-      category: 'Technology',
-      title: 'AI is changing the concept of architectural design in the...',
-      source: 'Al Jazeera',
-      time: '2h ago',
-      imagePath: 'images/Background.png',
-    ),
-    const ArticleData(
-      category: 'Economy',
-      title: 'Gulf markets close higher supported by energy stocks',
-      source: 'Al-Eqtisadiah',
-      time: '5h ago',
-      imagePath: 'images/Background2.png',
-    ),
-    const ArticleData(
-      category: 'Sports',
-      title: "Comprehensive analysis: Reasons for the team's...",
-      source: 'beIN SPORTS',
-      time: 'Yesterday',
-      imagePath: 'images/background3.png',
-    ),
-    const ArticleData(
-      category: 'Culture',
-      title: 'International Book Fair opens its doors with the...',
-      source: 'Al Arabiya',
-      time: '2 days ago',
-      imagePath: 'images/Background4.png',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.black),
-          onPressed: () {},
-        ),
-        title: const Text(
-          'Bookmarks',
-          style: TextStyle(
-            color: Color(0xFFD71920),
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none, color: Color(0xFFD71920)),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            BookmarksHeader(
-              articlesCount: articles.length,
-              onFilterPressed: () {},
-            ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: ListView.separated(
-                itemCount: articles.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  return BookmarkCard(
-                    article: articles[index],
-                    onBookmarkPressed: () {
-                      setState(() {
-                        // تبديل حالة الحفظ بدون حذف الخبر والصورة
-                        articles[index] = articles[index].copyWith(
-                          isBookmarked: !articles[index].isBookmarked,
-                        );
-                      });
+      appBar: AppHeader(title: AppLocalizations.of(context).bookmarks),
+      drawer: const AppDrawer(),
+      body: ValueListenableBuilder<List<ArticleData>>(
+        valueListenable: bookmarksNotifier,
+        builder: (context, articles, child) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                BookmarksHeader(
+                  articlesCount: articles.length,
+                  onFilterPressed: () {},
+                ),
+                const SizedBox(height: 12),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: articles.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      return BookmarkCard(
+                        article: articles[index],
+                        onBookmarkPressed: () =>
+                            toggleBookmark(articles[index]),
+                        onTap: () {},
+                      );
                     },
-                    onTap: () {},
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

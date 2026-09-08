@@ -1,13 +1,7 @@
-
-import 'package:brifup_news/Features/Bookmark/presentation/screen/bookmarks_screen.dart';
-import 'package:brifup_news/Features/Explore/presentation/screen/explore_screen.dart';
-import 'package:brifup_news/Features/Home/Presentation/Screen/home.dart';
-import 'package:brifup_news/Features/Home/Presentation/Screen/home_screen.dart';
-import 'package:brifup_news/root_screen.dart';
 import 'package:brifup_news/splash.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'dart:io';
-
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -19,7 +13,7 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.light);
-
+final ValueNotifier<Locale> localeNotifier = ValueNotifier(const Locale('en'));
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -32,16 +26,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeNotifier,
       builder: (context, currentMode, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'News App',
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
-          themeMode: currentMode,
-          home: const RootScreen(),
+        return ValueListenableBuilder<Locale>(
+          valueListenable: localeNotifier,
+          builder: (context, currentLocale, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'News App',
+              locale: currentLocale,
+              supportedLocales: const [Locale('en'), Locale('ar')],
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              theme: ThemeData.light(),
+              darkTheme: ThemeData.dark(),
+              themeMode: currentMode,
+              home: const Splash(),
+            );
+          },
         );
       },
     );

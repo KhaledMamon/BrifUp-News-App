@@ -1,4 +1,4 @@
-import 'package:brifup_news/Features/Home/Presentation/Screen/home.dart';
+import 'package:brifup_news/Core/Utils/root_screen.dart';
 import 'package:brifup_news/Features/Onboarding/Presentation/widgets/onboarding_dots.dart';
 import 'package:flutter/material.dart';
 
@@ -130,7 +130,7 @@ class _OnboardingState extends State<Onboarding> {
                   );
                 } else {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    MaterialPageRoute(builder: (context) => const RootScreen()),
                     (Route<dynamic> route) => false,
                   );
                 }
@@ -167,7 +167,7 @@ class _OnboardingState extends State<Onboarding> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    MaterialPageRoute(builder: (context) => const RootScreen()),
                     (Route<dynamic> route) => false,
                   );
                 },

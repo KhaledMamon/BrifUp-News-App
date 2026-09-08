@@ -4,7 +4,8 @@ class ArticleData {
   final String source;
   final String time;
   final String imagePath;
-  final bool isBookmarked; // إضافة هذا الحقل
+  final bool isBookmarked;
+  final bool isNetworkImage;
 
   const ArticleData({
     required this.category,
@@ -12,10 +13,10 @@ class ArticleData {
     required this.source,
     required this.time,
     required this.imagePath,
-    this.isBookmarked = true, // افتراضياً محفوظة
+    this.isBookmarked = true,
+    this.isNetworkImage = false,
   });
 
-  // دالة لتسهيل النسخ والتعديل
   ArticleData copyWith({bool? isBookmarked}) {
     return ArticleData(
       category: category,
@@ -24,6 +25,7 @@ class ArticleData {
       time: time,
       imagePath: imagePath,
       isBookmarked: isBookmarked ?? this.isBookmarked,
+      isNetworkImage: isNetworkImage,
     );
   }
 }

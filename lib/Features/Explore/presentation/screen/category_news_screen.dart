@@ -1,4 +1,6 @@
 import 'package:brifup_news/Features/Explore/model/explore_article_model.dart';
+import 'package:brifup_news/Core/Utils/app_image.dart';
+import 'package:brifup_news/Core/Utils/app_shell.dart';
 import 'package:flutter/material.dart';
 
 class CategoryNewsScreen extends StatelessWidget {
@@ -13,20 +15,13 @@ class CategoryNewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          categoryTitle,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0.5,
-      ),
+      appBar: AppHeader(title: categoryTitle, showBack: true),
+      drawer: const AppDrawer(),
       body: articles.isEmpty
-          ? const Center(
-              child: Text("لا توجد أخبار المتاحة لهذا القسم حالياً"),
-            )
+          ? const Center(child: Text("لا توجد أخبار المتاحة لهذا القسم حالياً"))
           : ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: articles.length,
@@ -36,39 +31,23 @@ class CategoryNewsScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 16),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.grey.shade200),
                   ),
                   child: Row(
                     children: [
-                      // صورة الخبر
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: article.urlToImage != null &&
-                                article.urlToImage!.startsWith('http')
-                            ? Image.network(
-                                article.urlToImage!,
-                                width: 90,
-                                height: 90,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Container(
-                                  width: 90,
-                                  height: 90,
-                                  color: Colors.grey.shade300,
-                                  child: const Icon(Icons.broken_image),
-                                ),
-                              )
-                            : Container(
-                                width: 90,
-                                height: 90,
-                                color: Colors.grey.shade300,
-                                child: const Icon(Icons.newspaper),
-                              ),
+                        child: AppImage(
+                          url: article.urlToImage,
+                          width: 90,
+                          height: 90,
+                          fallbackSeed: article.title,
+                        ),
                       ),
                       const SizedBox(width: 12),
-                      // تفاصيل الخبر
+
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

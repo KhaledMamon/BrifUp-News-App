@@ -2,6 +2,8 @@ import 'package:brifup_news/Features/Bookmark/presentation/screen/bookmarks_scre
 import 'package:brifup_news/Features/Explore/presentation/screen/explore_screen.dart';
 import 'package:brifup_news/Features/Home/Presentation/Screen/home.dart';
 import 'package:brifup_news/Features/Profile/presentaion/screen/profile_screen.dart';
+import 'package:brifup_news/Core/Utils/app_localizations.dart';
+import 'package:brifup_news/Core/Utils/app_shell.dart';
 import 'package:flutter/material.dart';
 
 class RootScreen extends StatefulWidget {
@@ -14,7 +16,6 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   int _currentIndex = 0;
 
-  // استخدام GlobalKeys للحفاظ على حالة الـ Navigator لكل tab مستقلة
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
@@ -23,18 +24,39 @@ class _RootScreenState extends State<RootScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    selectedTabNotifier.addListener(_syncSelectedTab);
+  }
+
+  @override
+  void dispose() {
+    selectedTabNotifier.removeListener(_syncSelectedTab);
+    super.dispose();
+  }
+
+  void _syncSelectedTab() {
+    if (mounted && _currentIndex != selectedTabNotifier.value) {
+      setState(() => _currentIndex = selectedTabNotifier.value);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+
     return WillPopScope(
       onWillPop: () async {
-        // دعم زر الرجوع داخل الـ Tab الحالية دون الخروج فوراً من التطبيق
-        final isFirstRouteInCurrentTab =
-            !await _navigatorKeys[_currentIndex].currentState!.maybePop();
+        final isFirstRouteInCurrentTab = !await _navigatorKeys[_currentIndex]
+            .currentState!
+            .maybePop();
         return isFirstRouteInCurrentTab;
       },
       child: Scaffold(
         body: IndexedStack(
           index: _currentIndex,
           children: [
+            // _buildOffstageNavigator(0, const Splash()),
             _buildOffstageNavigator(0, const HomeScreen()),
             _buildOffstageNavigator(1, const ExploreScreen()),
             _buildOffstageNavigator(2, const BookmarksScreen()),
@@ -47,26 +69,24 @@ class _RootScreenState extends State<RootScreen> {
           selectedItemColor: const Color.fromARGB(255, 232, 43, 26),
           unselectedItemColor: Colors.grey,
           onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
+            selectedTabNotifier.value = index;
           },
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: strings.home,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.explore),
-              label: 'Explore',
+              label: strings.explore,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.bookmark),
-              label: 'Bookmarks',
+              label: strings.bookmarks,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Profile',
+              label: strings.profile,
             ),
           ],
         ),
@@ -80,9 +100,7 @@ class _RootScreenState extends State<RootScreen> {
       child: Navigator(
         key: _navigatorKeys[index],
         onGenerateRoute: (routeSettings) {
-          return MaterialPageRoute(
-            builder: (context) => rootWidget,
-          );
+          return MaterialPageRoute(builder: (context) => rootWidget);
         },
       ),
     );

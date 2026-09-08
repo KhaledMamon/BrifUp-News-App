@@ -1,7 +1,6 @@
 import 'package:brifup_news/Features/Bookmark/Data/model/article_model.dart';
+import 'package:brifup_news/Core/Utils/app_image.dart';
 import 'package:flutter/material.dart';
-
-
 
 class BookmarkCard extends StatelessWidget {
   final ArticleData article;
@@ -25,10 +24,7 @@ class BookmarkCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: const Color(0xFFE2E2E2),
-            width: 1,
-          ),
+          border: Border.all(color: const Color(0xFFE2E2E2), width: 1),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.02),
@@ -82,7 +78,10 @@ class BookmarkCard extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         child: Text(
                           '•',
-                          style: TextStyle(fontSize: 10, color: Color(0xFF999999)),
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFF999999),
+                          ),
                         ),
                       ),
                       Text(
@@ -100,27 +99,33 @@ class BookmarkCard extends StatelessWidget {
             const SizedBox(width: 12),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                article.imagePath,
-                width: 80,
-                height: 75,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) {
-                  return Container(
-                    width: 80,
-                    height: 75,
-                    color: const Color(0xFFEAEAEA),
-                    child: const Icon(
-                      Icons.image_outlined,
-                      color: Colors.grey,
+              child: article.isNetworkImage
+                  ? AppImage(
+                      url: article.imagePath,
+                      width: 80,
+                      height: 75,
+                      fallbackSeed: article.title,
+                    )
+                  : Image.asset(
+                      article.imagePath,
+                      width: 80,
+                      height: 75,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => _imagePlaceholder(),
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _imagePlaceholder() {
+    return Container(
+      width: 80,
+      height: 75,
+      color: const Color(0xFFEAEAEA),
+      child: const Icon(Icons.image_outlined, color: Colors.grey),
     );
   }
 }

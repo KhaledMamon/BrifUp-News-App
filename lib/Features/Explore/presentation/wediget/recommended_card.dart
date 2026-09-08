@@ -1,4 +1,7 @@
+import 'package:brifup_news/Features/Bookmark/Data/bookmark_store.dart';
+import 'package:brifup_news/Features/Bookmark/Data/model/article_model.dart';
 import 'package:brifup_news/Features/Explore/model/explore_article_model.dart';
+import 'package:brifup_news/Core/Utils/app_image.dart';
 import 'package:flutter/material.dart';
 
 class RecommendedCard extends StatelessWidget {
@@ -11,7 +14,7 @@ class RecommendedCard extends StatelessWidget {
     return Container(
       width: 220,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey.shade200),
       ),
@@ -20,7 +23,12 @@ class RecommendedCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: _buildImage(article.urlToImage),
+            child: AppImage(
+              url: article.urlToImage,
+              width: 220,
+              height: 120,
+              fallbackSeed: article.title,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -50,10 +58,7 @@ class RecommendedCard extends StatelessWidget {
                   article.description ?? '',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 11,
-                  ),
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 11),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -61,9 +66,44 @@ class RecommendedCard extends StatelessWidget {
                   children: [
                     Text(
                       article.publishedAt ?? '',
-                      style: TextStyle(color: Colors.grey.shade500, fontSize: 10),
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 10,
+                      ),
                     ),
-                    const Icon(Icons.bookmark_border, size: 16, color: Colors.grey),
+                    ValueListenableBuilder<List<ArticleData>>(
+                      valueListenable: bookmarksNotifier,
+                      builder: (context, bookmarks, child) {
+                        final savedArticle = ArticleData(
+                          category: article.category ?? 'GENERAL',
+                          title: article.title,
+                          source: 'Explore',
+                          time: article.publishedAt ?? '',
+                          imagePath: article.urlToImage ?? '',
+                          isNetworkImage: true,
+                        );
+                        final saved = bookmarks.any(
+                          (item) =>
+                              articleBookmarkId(
+                                title: item.title,
+                                source: item.source,
+                              ) ==
+                              articleBookmarkId(
+                                title: savedArticle.title,
+                                source: savedArticle.source,
+                              ),
+                        );
+
+                        return GestureDetector(
+                          onTap: () => toggleBookmark(savedArticle),
+                          child: Icon(
+                            saved ? Icons.bookmark : Icons.bookmark_border,
+                            size: 16,
+                            color: saved ? Colors.red : Colors.grey,
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ],
@@ -72,37 +112,5 @@ class RecommendedCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  // دالة ذكية للتحقق هل الصورة رابط من الـ API أم من الـ Assets
-  Widget _buildImage(String? imagePath) {
-    if (imagePath == null || imagePath.isEmpty) {
-      return Container(
-        height: 120,
-        color: Colors.grey.shade300,
-        child: const Icon(Icons.image_not_supported, color: Colors.grey),
-      );
-    }
-
-    if (imagePath.startsWith('http')) {
-      return Image.network(
-        imagePath,
-        height: 120,
-        width: double.infinity,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => Container(
-          height: 120,
-          color: Colors.grey.shade300,
-          child: const Icon(Icons.broken_image, color: Colors.grey),
-        ),
-      );
-    } else {
-      return Image.asset(
-        imagePath,
-        height: 120,
-        width: double.infinity,
-        fit: BoxFit.cover,
-      );
-    }
   }
 }

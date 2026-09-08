@@ -4,7 +4,7 @@ class ExploreArticleModel {
   final String? description;
   final String? publishedAt;
   final String? urlToImage;
-  final String? url; // ضفنا الـ URL عشان لو حابب تفتح الخبر كاملاً
+  final String? url; 
 
   const ExploreArticleModel({
     this.category,
@@ -15,7 +15,6 @@ class ExploreArticleModel {
     this.url,
   });
 
-  // Factory لتحويل الـ JSON اللي جاي من Dio لـ Model
   factory ExploreArticleModel.fromJson(Map<String, dynamic> json, {String? categoryName}) {
     return ExploreArticleModel(
       category: categoryName,

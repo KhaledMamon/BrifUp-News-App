@@ -1,4 +1,5 @@
 import 'package:brifup_news/Features/Details%20Screen/Presentation/Screens/page_detail_news.dart';
+import 'package:brifup_news/Core/Utils/app_image.dart';
 import 'package:flutter/material.dart';
 
 class Trending extends StatefulWidget {
@@ -44,11 +45,12 @@ class _TrendingState extends State<Trending> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: Image.network(
-                '${widget.articleURL}',
+              child: AppImage(
+                url: widget.articleURL,
                 width: 370,
                 height: double.infinity,
                 fit: BoxFit.cover,
+                fallbackSeed: widget.title,
               ),
             ),
             Positioned(
@@ -90,12 +92,12 @@ class _TrendingState extends State<Trending> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(60),
-                    child: Image.network(
-                      '${widget.journalURL}',
-
+                    child: AppImage(
+                      url: widget.journalURL,
                       width: 25,
                       height: 25,
                       fit: BoxFit.cover,
+                      fallbackSeed: widget.journal,
                     ),
                   ),
 

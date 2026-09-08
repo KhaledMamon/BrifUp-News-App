@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:brifup_news/Core/Utils/app_localizations.dart';
+import 'package:brifup_news/Core/Utils/app_shell.dart';
+import 'package:brifup_news/main.dart';
 import '../../Data/model/user_profile_model.dart';
 import '../wediget/profile_menu_item.dart';
 import '../wediget/profile_switch_item.dart';
@@ -11,9 +14,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  bool isDarkMode = false;
-
-
   final UserProfileModel user = const UserProfileModel(
     name: "Mohamed Elmasry",
     email: "moham.doe@example.com",
@@ -23,30 +23,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.black),
-          onPressed: () {},
-        ),
-        title: const Text(
-          "BrifUp News",
-          style: TextStyle(
-            color: Color(0xFFB71C1C),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      drawer: const AppDrawer(),
+      appBar: AppHeader(title: strings.profile),
+      
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -67,7 +50,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       backgroundColor: Colors.red,
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        icon: const Icon(Icons.edit, size: 14, color: Colors.white),
+                        icon: const Icon(
+                          Icons.edit,
+                          size: 14,
+                          color: Colors.white,
+                        ),
                         onPressed: () {},
                       ),
                     ),
@@ -88,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 24),
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.grey.shade200),
               ),
@@ -96,34 +83,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   ProfileMenuItem(
                     icon: Icons.notifications_none,
-                    title: "Notifications",
-                    subtitle: "Manage alerts and daily digests",
+                    title: strings.notifications,
+                    subtitle: strings.manageAlerts,
                     onTap: () {},
                   ),
                   const Divider(height: 1, indent: 60),
                   ProfileSwitchItem(
                     icon: Icons.dark_mode_outlined,
-                    title: "Reading Mode",
-                    subtitle: isDarkMode ? "Dark" : "Light",
-                    value: isDarkMode,
+                    title: strings.readingMode,
+                    subtitle: themeNotifier.value == ThemeMode.dark
+                        ? strings.dark
+                        : strings.light,
+                    value: themeNotifier.value == ThemeMode.dark,
                     onChanged: (val) {
-                      setState(() {
-                        isDarkMode = val;
-                      });
+                      themeNotifier.value = val
+                          ? ThemeMode.dark
+                          : ThemeMode.light;
                     },
                   ),
                   const Divider(height: 1, indent: 60),
                   ProfileMenuItem(
                     icon: Icons.bookmark_border,
-                    title: "Saved Articles",
-                    subtitle: "Read later and offline content",
+                    title: strings.savedArticles,
+                    subtitle: strings.savedArticlesSubtitle,
                     onTap: () {},
                   ),
                   const Divider(height: 1, indent: 60),
                   ProfileMenuItem(
                     icon: Icons.auto_awesome_mosaic_outlined,
-                    title: "Interests",
-                    subtitle: "Customize your news feed",
+                    title: strings.interests,
+                    subtitle: strings.customizeFeed,
                     onTap: () {},
                   ),
                 ],
@@ -142,11 +131,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.logout, size: 20),
+                children: [
+                  const Icon(Icons.logout, size: 20),
                   SizedBox(width: 8),
                   Text(
-                    "Sign Out",
+                    strings.signOut,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ],

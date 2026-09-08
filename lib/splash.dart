@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:brifup_news/Features/Onboarding/Presentation/Screens/onboarding.dart';
-import 'package:brifup_news/Features/Onboarding/Presentation/Screens/onboarding.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {

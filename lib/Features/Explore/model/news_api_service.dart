@@ -10,7 +10,6 @@ class NewsApiService {
     ),
   );
 
-  // الـ API Key الخاص بيك
   final String _apiKey = '53eeb69150714146a59d84809e266edd';
 
   Future<List<ExploreArticleModel>> getArticlesByCategory(String category) async {
@@ -18,7 +17,7 @@ class NewsApiService {
       final response = await _dio.get(
         'top-headlines',
         queryParameters: {
-          'country': 'us', // جرب 'us' أو ابعثها فاضية لو حابب أخبار عالمية
+          'country': 'us',
           'category': category.toLowerCase(),
           'apiKey': _apiKey,
         },

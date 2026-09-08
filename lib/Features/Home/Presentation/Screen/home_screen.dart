@@ -33,7 +33,6 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(8.0),
           child: TextField(
             onSubmitted: (value) {
-              // يمكن إضافة البحث عبر الـ API هنا
             },
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
@@ -132,7 +131,7 @@ class _HomeState extends State<Home> {
                     indicatorSize: TabBarIndicatorSize.label,
                     dividerColor: Colors.transparent,
                     onTap: (index) {
-                      // يمكنك جلب الأخبار بحسب القسم عند الضغط على الـ Tab
+
                     },
                     tabs: const [
                       Tab(text: "All"),

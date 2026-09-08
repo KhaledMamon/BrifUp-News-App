@@ -1,6 +1,8 @@
 import 'package:brifup_news/Features/Explore/model/explore_article_model.dart';
 import 'package:brifup_news/Features/Explore/model/news_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:brifup_news/Core/Utils/app_localizations.dart';
+import 'package:brifup_news/Core/Utils/app_shell.dart';
 
 import '../wediget/category_card.dart';
 import '../wediget/recommended_card.dart';
@@ -27,23 +29,25 @@ class ExploreScreen extends StatelessWidget {
     ),
   ];
 
-  void _onCategoryTap(BuildContext context, String categoryName, String apiKeyCategory) async {
-    // 1. إظهار مؤشر التحميل
+  void _onCategoryTap(
+    BuildContext context,
+    String categoryName,
+    String apiKeyCategory,
+  ) async {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
 
-    // 2. طلب البيانات من الـ API
     NewsApiService apiService = NewsApiService();
-    List<ExploreArticleModel> articles = await apiService.getArticlesByCategory(apiKeyCategory);
+    List<ExploreArticleModel> articles = await apiService.getArticlesByCategory(
+      apiKeyCategory,
+    );
 
     if (context.mounted) {
-      // 3. إغلاق نافذة التحميل عبر الـ rootNavigator لمنع تعليق الشاشة الرمادية
       Navigator.of(context, rootNavigator: true).pop();
 
-      // 4. الانتقال لشاشة عرض الأخبار
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -58,8 +62,13 @@ class ExploreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: AppHeader(title: strings.explore),
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: Column(
           children: [
@@ -69,26 +78,16 @@ class ExploreScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
+                  color: theme.colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: const TextField(
+                child: TextField(
                   decoration: InputDecoration(
-                    icon: Icon(
-                      Icons.search,
-                      color: Colors.grey,
-                    ),
+                    icon: Icon(Icons.search),
                     hintText: "Search news, topics, or authors...",
-                    hintStyle: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey,
-                    ),
+                    hintStyle: TextStyle(fontSize: 13, color: theme.hintColor),
                     border: InputBorder.none,
-                    suffixIcon: Icon(
-                      Icons.tune,
-                      color: Colors.grey,
-                      size: 20,
-                    ),
+                    suffixIcon: const Icon(Icons.tune, size: 20),
                   ),
                 ),
               ),
@@ -101,7 +100,7 @@ class ExploreScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Explore Categories",
                       style: TextStyle(
                         fontSize: 16,
@@ -123,32 +122,39 @@ class ExploreScreen extends StatelessWidget {
                           title: "Sports",
                           imagePath: "images/Category Card1.png",
                           icon: Icons.flag,
-                          onTap: () => _onCategoryTap(context, "Sports", "sports"),
+                          onTap: () =>
+                              _onCategoryTap(context, "Sports", "sports"),
                         ),
                         CategoryCard(
                           title: "Technology",
                           imagePath: "images/Category Card2.png",
                           icon: Icons.memory,
-                          onTap: () => _onCategoryTap(context, "Technology", "technology"),
+                          onTap: () => _onCategoryTap(
+                            context,
+                            "Technology",
+                            "technology",
+                          ),
                         ),
                         CategoryCard(
                           title: "Business",
                           imagePath: "images/Business.png",
                           icon: Icons.business,
-                          onTap: () => _onCategoryTap(context, "Business", "business"),
+                          onTap: () =>
+                              _onCategoryTap(context, "Business", "business"),
                         ),
                         CategoryCard(
                           title: "Health",
                           imagePath: "images/CategoryCard4.png",
                           icon: Icons.local_hospital,
-                          onTap: () => _onCategoryTap(context, "Health", "health"),
+                          onTap: () =>
+                              _onCategoryTap(context, "Health", "health"),
                         ),
                       ],
                     ),
 
                     const SizedBox(height: 24),
 
-                    const Text(
+                    Text(
                       "Recommended for You",
                       style: TextStyle(
                         fontSize: 16,

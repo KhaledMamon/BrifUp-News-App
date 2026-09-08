@@ -1,4 +1,8 @@
 import 'package:brifup_news/Features/Details%20Screen/Presentation/Screens/page_detail_news.dart';
+import 'package:brifup_news/Features/Bookmark/Data/bookmark_store.dart';
+import 'package:brifup_news/Features/Bookmark/Data/model/article_model.dart';
+import 'package:brifup_news/Features/Home/Data/models/model.dart';
+import 'package:brifup_news/Core/Utils/app_image.dart';
 import 'package:flutter/material.dart';
 
 class LatestNews extends StatefulWidget {
@@ -46,31 +50,18 @@ class _LatestNewsState extends State<LatestNews> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. الصورة الرئيسية مع معالجة الأخطاء والأبعاد
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  widget.articleURL ?? '',
+                child: AppImage(
+                  url: widget.articleURL,
                   height: 100,
                   width: 100,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      height: 100,
-                      width: 100,
-                      color: Colors.grey[300],
-                      child: const Icon(
-                        Icons.broken_image,
-                        color: Colors.grey,
-                        size: 40,
-                      ),
-                    );
-                  },
+                  fallbackSeed: widget.title,
                 ),
               ),
               const SizedBox(width: 10),
 
-              // 2. تفاصيل الخبر
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,28 +86,20 @@ class _LatestNewsState extends State<LatestNews> {
                     ),
                     const SizedBox(height: 8),
 
-                    // 3. الصف السفلي للمصدر والوقت والأيقونة
                     Row(
                       children: [
-                        // صورة المصدر
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.network(
-                            widget.journalURL ?? '',
+                          child: AppImage(
+                            url: widget.journalURL,
                             width: 18,
                             height: 18,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Icon(
-                              Icons.newspaper,
-                              size: 18,
-                              color: Colors.grey,
-                            ),
+                            fallbackSeed: widget.journal,
                           ),
                         ),
                         const SizedBox(width: 4),
 
-                        // اسم المصدر
                         Flexible(
                           child: Text(
                             widget.journal ?? '',
@@ -131,7 +114,6 @@ class _LatestNewsState extends State<LatestNews> {
                         ),
                         const SizedBox(width: 8),
 
-                        // أيقونة الوقت والزمن
                         const Icon(
                           Icons.schedule,
                           size: 14,
@@ -146,16 +128,47 @@ class _LatestNewsState extends State<LatestNews> {
                           ),
                         ),
 
-                        const Spacer(),
+                        const Spacer(flex: 1),
 
-                        // زر الحفظ
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Icon(
-                            Icons.bookmark_border_outlined,
-                            size: 20,
-                            color: Color.fromRGBO(78, 75, 102, 1),
-                          ),
+                        ValueListenableBuilder<List<ArticleData>>(
+                          valueListenable: bookmarksNotifier,
+                          builder: (context, bookmarks, child) {
+                            final article = articleDataFromNews(
+                              NewsModel(
+                                articleURL: widget.articleURL,
+                                title: widget.title,
+                                journal: widget.journal,
+                                journalURL: widget.journalURL,
+                                country: widget.country,
+                                time: widget.time,
+                                snippet: widget.snippet,
+                              ),
+                            );
+                            final saved = bookmarks.any(
+                              (item) =>
+                                  articleBookmarkId(
+                                    title: item.title,
+                                    source: item.source,
+                                  ) ==
+                                  articleBookmarkId(
+                                    title: article.title,
+                                    source: article.source,
+                                  ),
+                            );
+
+                            return GestureDetector(
+                              onTap: () => toggleBookmark(article),
+                              child: Icon(
+                                saved
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_border_outlined,
+                                size: 20,
+                                color: saved
+                                    ? const Color(0xFFD71920)
+                                    : const Color.fromRGBO(78, 75, 102, 1),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
